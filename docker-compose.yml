@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  nlp-service-backend:
+    container_name: nlp_service_backend
+    build:
+      context: ./nlp-service-backend
+    environment:
+      NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
+    networks:
+      - network_1
+
+networks:
+  network_1:
+    name: ${NETWORK_NAME}
