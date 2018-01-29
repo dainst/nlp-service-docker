@@ -1,0 +1,3 @@
+[submodule "nlp-service-backend/nlp_service"]
+	path = nlp-service-backend/nlp_service
+	url = https://github.com/dainst/nlp_service
