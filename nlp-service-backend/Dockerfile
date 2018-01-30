@@ -17,7 +17,9 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 ENV LANG LANG=en_US.UTF-8
 
-RUN pip3 install Flask
+RUN pip3 install \
+      Flask \
+      pymongo
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG LANG=en_US.UTF-8

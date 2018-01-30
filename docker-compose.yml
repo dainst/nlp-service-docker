@@ -14,14 +14,20 @@ services:
       - mongodb_data
     ports:
       - 27017:27017
+    networks:
+      - network_1
   nlp-service-backend:
     container_name: nlp_service_backend
     build:
       context: ./nlp-service-backend
     environment:
       NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
+      DB_HOST: nlp_service_db # corresponds to nlp-service-db's container_name
+      DB_ROOT_CREDENTIALS: ${DB_ROOT_NAME}:${DB_ROOT_PASSWORD} # added for testing, should be removed later on
     ports:
       - "5000:5000"
+    depends_on:
+      - nlp-service-db
     volumes:
       - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
     networks:

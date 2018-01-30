@@ -35,4 +35,6 @@ For further details see:
 `docker-compose down` or `docker-compose down -v` (`-v` to also remove the database volumes)
 
 ### Interfaces:
-- The web service container should be mapped to [localhost:5000](http://localhost:5000).
+- The web service container should be mapped to [localhost:5000](http://localhost:5000). If you navigate to 
+[/database_info](http://localhost:5000/database_info), you should currently see the MongoDB server
+info.
