@@ -1,6 +1,19 @@
 version: '3.5'
 
 services:
+  nlp-service-db:
+    image: mongo:3.6
+    container_name: nlp_service_db
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_NAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MONGODB_USER=${DB_USER_NAME}
+      - MONGODB_PASS=${DB_USER_PASSWORD}
+    volumes:
+      - mongodb_data
+    ports:
+      - 27017:27017
   nlp-service-backend:
     container_name: nlp_service_backend
     build:
@@ -13,6 +26,9 @@ services:
       - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
     networks:
       - network_1
+
+volumes:
+  mongodb_data: {}
 
 networks:
   network_1:
