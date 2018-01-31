@@ -1,8 +1,8 @@
 FROM debian:stretch
 
-ENV REFRESHED_AT 2018-01-29
-ENV MAINTAINER Deutsches Archäologisches Institut "dev@dainst.de"
+MAINTAINER Deutsches Archäologisches Institut "dev@dainst.de"
 
+ENV REFRESHED_AT 2018-01-29
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get clean
