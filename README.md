@@ -14,6 +14,11 @@ git submodule init
 git submodule update
 ```
 
+If you want to work on the submodules code, you first have to navigate to its directory and checkout the branch you 
+need. The submodule will always start in a detached head state, see this 
+[explanation](https://stackoverflow.com/questions/21980073/git-submodules-without-detached-head).
+
+
 ### Docker
 
 For further details see: 
