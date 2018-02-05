@@ -2,3 +2,7 @@
 	path = nlp-service-backend/nlp_service
 	url = https://github.com/dainst/nlp_service
     branch = master
+[submodule "nlp-service-backend/nlp_components"]
+	path = nlp-service-backend/nlp_components
+	url = https://github.com/dainst/nlp_components
+	branch = master
