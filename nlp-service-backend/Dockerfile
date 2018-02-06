@@ -8,21 +8,69 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get clean
 
 RUN apt-get install -y \
+      wget \
+      unzip \
+      default-jre \
+      locales \
       python3 \
       python3-pip \
-      locales
+      git
 
 RUN rm -rf /var/lib/apt/lists/*
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 ENV LANG LANG=en_US.UTF-8
 
+# Install Treetagger for nlp_components
+ENV TREETAGGER_HOME /opt/bin/treetagger
+ENV PATH $PATH:$TREETAGGER_HOME/bin/:$TREETAGGER_HOME/cmd/
+
+RUN mkdir /opt/bin
+RUN mkdir $TREETAGGER_HOME
+WORKDIR $TREETAGGER_HOME
+
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/tree-tagger-ARM64-3.2.tar.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/tagger-scripts.tar.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/german-par-linux-3.2-utf8.bin.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/english-par-linux-3.2-utf8.bin.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/italian-par-linux-3.2-utf8.bin.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/spanish-par-linux-3.2-utf8.bin.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/french-par-linux-3.2-utf8.bin.gz
+RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/install-tagger.sh
+RUN sh install-tagger.sh
+
+# Install Stanford NER  for nlp_components
+ENV STANFORDHOME=/opt/bin/stanford_ner
+ENV CLASSPATH=$CLASSPATH:$STANFORDHOME/stanford-ner.jar
+ENV STANFORD_MODELS=$STANFORDHOME/models:$STANFORDHOME/classifiers
+RUN mkdir $STANFORDHOME
+
+WORKDIR /tmp
+RUN wget https://nlp.stanford.edu/software/stanford-ner-2015-12-09.zip
+RUN unzip stanford-ner-2015-12-09.zip
+RUN mv stanford-ner-2015-12-09/* $STANFORDHOME
+RUN rm stanford-ner-2015-12-09.zip
+
+RUN wget http://nlp.dainst.org/html/nerclass/english.all.3class.distsim.crf.ser.gz -P $STANFORDHOME/classifiers
+RUN wget http://nlp.dainst.org/html/nerclass/german.hgc_175m_600.crf.ser.gz -P $STANFORDHOME/classifiers
+RUN wget http://nlp.dainst.org/html/nerclass/ner-ita-nogpe-noiob_gaz_wikipedia_sloppy.ser.gz -P $STANFORDHOME/classifiers
+RUN wget http://nlp.dainst.org/html/nerclass/spanish.ancora.distsim.s512.crf.ser.gz -P $STANFORDHOME/classifiers
+
+# Python 3 dependencies for nlp_components
+RUN pip3 install \
+    NLTK \
+    lxml \
+    requests \
+    langid \
+    git+https://github.com/miotto/treetagger-python.git \
+    pytest
+
+RUN python3 -m nltk.downloader -d /usr/local/share/nltk_data punkt
+
+# Python 3 dependencies for nlp_service
 RUN pip3 install \
       Flask \
       pymongo
-
-ENV LC_ALL en_US.UTF-8
-ENV LANG LANG=en_US.UTF-8
 
 EXPOSE 5000
 
