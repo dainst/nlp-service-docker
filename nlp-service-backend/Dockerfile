@@ -57,6 +57,14 @@ RUN wget http://nlp.dainst.org/html/nerclass/german.hgc_175m_600.crf.ser.gz -P $
 RUN wget http://nlp.dainst.org/html/nerclass/ner-ita-nogpe-noiob_gaz_wikipedia_sloppy.ser.gz -P $STANFORDHOME/classifiers
 RUN wget http://nlp.dainst.org/html/nerclass/spanish.ancora.distsim.s512.crf.ser.gz -P $STANFORDHOME/classifiers
 
+# Install Geoparser for nlp_components
+## ATTENTION: The geoparser home folder is currently hardcoded in nlp_components
+ENV GEOPARSER_HOME=/opt/nlp
+RUN wget http://nlp.dainst.org/html/geo/geoparser-march2016.zip
+RUN unzip geoparser-march2016.zip
+RUN rm geoparser-march2016.zip
+RUN mv geoparser-march2016 $GEOPARSER_HOME
+
 # Python 3 dependencies for nlp_components
 RUN pip3 install \
     NLTK \
@@ -72,6 +80,8 @@ RUN python3 -m nltk.downloader -d /usr/local/share/nltk_data punkt
 RUN pip3 install \
       Flask \
       pymongo
+
+WORKDIR /usr/src
 
 EXPOSE 5000
 
