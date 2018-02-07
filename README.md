@@ -18,26 +18,8 @@ If you want to work on the submodules code, you first have to navigate to its di
 need. The submodule will always start in a detached head state, see this 
 [explanation](https://stackoverflow.com/questions/21980073/git-submodules-without-detached-head).
 
-
 ### Docker
-
-For further details see: 
-[Docker docs](https://docs.docker.com/compose/reference/overview/#command-options-overview-and-help).
-
-#### build services:
-`docker-compose build` 
-
-#### create & start all containers:
-`docker-compose up`
-
-#### stop containers:
-`CTRL-C` or `docker-compose stop`
-
-#### start containers:
-`docker-compose start`
-
-#### stop and remove containers: 
-`docker-compose down` or `docker-compose down -v` (`-v` to also remove the database volumes)
+For the most used commands have a look at the [DOCKER.md](DOCKER.md).
 
 ### Interfaces:
 - The web service container should be mapped to [localhost:5000](http://localhost:5000). If you navigate to 
