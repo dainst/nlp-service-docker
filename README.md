@@ -43,3 +43,9 @@ For further details see:
 - The web service container should be mapped to [localhost:5000](http://localhost:5000). If you navigate to 
 [/database_info](http://localhost:5000/database_info), you should currently see the MongoDB server
 info.
+
+### run tests
+#### unit tests nlp components
+`docker exec -it nlp_service_backend bash`
+`cd /usr/src/nlp_components/idai_journals`
+`pytest --verbose`
