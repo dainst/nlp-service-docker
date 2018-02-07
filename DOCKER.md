@@ -1,23 +1,29 @@
-# Docker cheatsheet 
+# Docker cheat sheet 
 
-This is used a very small collection of commands often used, for further details see: 
+## Setup
+`docker-compose build && docker-compose up` 
+
+For a brief explanation of these and other commands see below.
+
+## Command overview
+This is a relatively small collection of often used commands, for further reading see: 
 [Docker docs](https://docs.docker.com/compose/reference/overview/#command-options-overview-and-help).
 
 ### build services:
 `docker-compose build` 
 
-This builds the images as defined in the different _Dockerfile_. Currently there is only one _Dockerfile_ for the backend.
-If you change a _Dockerfile_, this command has to be run.
+Builds the images as defined in the different _Dockerfile_. Currently there is only one _Dockerfile_ for the backend.
+If you change a _Dockerfile_, this command has to be run again.
 
 ### create & start all containers:
 `docker-compose up`
 
 Creates and starts all containers and the networks as defined in the _docker-compose.yml_. If you change anything in
 the docker-compose.yml, you have to stop (and potentially remove) the existing containers (see below) and run this 
-command.
+command again.
 
 ### stop containers:
-`CTRL-C` or `docker-compose stop`
+`CTRL-C` (if running in foreground) or `docker-compose stop`
 
 ### start containers:
 `docker-compose start`
@@ -37,5 +43,5 @@ _docker-compose.yml_.
 ### Removing old and unused data
 `docker system prune` 
 
-Over time, old containers, unused images and build cache may fill up your filesystem. By running this command, docker 
-removes unused data ([Docker docs](https://docs.docker.com/engine/reference/commandline/system_prune/)).
+Over time, old containers, unused images and the build cache may fill up your filesystem. By running this command, 
+docker removes unused data ([Docker docs](https://docs.docker.com/engine/reference/commandline/system_prune/)).
