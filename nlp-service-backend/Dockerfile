@@ -76,10 +76,8 @@ RUN pip3 install \
 
 RUN python3 -m nltk.downloader -d /usr/local/share/nltk_data punkt
 
-# Python 3 dependencies for nlp_service
-RUN pip3 install \
-      Flask \
-      pymongo
+COPY ./nlp_service/requirements.txt /tmp/nlp_service/requirements.txt
+RUN pip3 install -r /tmp/nlp_service/requirements.txt
 
 WORKDIR /usr/src
 
