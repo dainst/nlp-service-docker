@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
+# TODO: Remove components root, once fully migrated to worker container
 export PYTHONPATH="${NLP_COMPONENTS_ROOT}:${NLP_SERVICE_ROOT}"
-
-celery worker -A main.celery --loglevel=info > celery.log 2>&1 &
 
 python3 ${NLP_SERVICE_ROOT}/main.py

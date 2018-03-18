@@ -3,11 +3,11 @@ version: '3.5'
 services:
   nlp-service-broker:
     image: rabbitmq:latest
-    container_name: nlp_service_broker
+    container_name: ${BROKER_HOSTNAME}
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
-      - RABBITMQ_DEFAULT_VHOST=nlp_vhost
+      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
+      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
+      - RABBITMQ_DEFAULT_VHOST=${BROKER_VHOST}
     ports:
       - "5672:5672"
     networks:
@@ -19,9 +19,10 @@ services:
     environment:
       NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
       NLP_COMPONENTS_ROOT: ${NLP_COMPONENTS_ROOT}
-      BROKER_HOST: nlp_service_broker # corresponds to nlp-service-db's container_name
-      BROKER_USER: user
-      BROKER_PASSWORD: password
+      BROKER_HOST: ${BROKER_HOSTNAME}
+      BROKER_USER: ${BROKER_USER}
+      BROKER_PASSWORD: ${BROKER_PASSWORD}
+      BROKER_VHOST: ${BROKER_VHOST}
     ports:
       - "5000:5000"
     links:
@@ -30,7 +31,25 @@ services:
       - nlp-service-broker
     volumes:
       - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
-      - ./nlp-service-backend/nlp_components:${NLP_COMPONENTS_ROOT}
+      - ./nlp-service-backend/nlp_components:${NLP_COMPONENTS_ROOT} # TODO: Move nlp_components into worker
+    networks:
+      - network_1
+  nlp-worker:
+    build:
+      context: ./nlp-service-backend
+      dockerfile: Dockerfile-worker
+    environment:
+      NLP_COMPONENTS_ROOT: ${NLP_COMPONENTS_ROOT}
+      BROKER_HOST: ${BROKER_HOSTNAME}
+      BROKER_USER: ${BROKER_USER}
+      BROKER_PASSWORD: ${BROKER_PASSWORD}
+      BROKER_VHOST: ${BROKER_VHOST}
+    volumes:
+      - ./nlp-service-backend/nlp_service/celery_tasks.py:${NLP_SERVICE_ROOT}/celery_tasks.py # TODO: Move nlp_components here
+    links:
+      - nlp-service-broker
+    depends_on:
+      - nlp-service-broker
     networks:
       - network_1
 

@@ -5,8 +5,6 @@ MAINTAINER Deutsches Archäologisches Institut "dev@dainst.de"
 ENV REFRESHED_AT 2018-01-29
 ENV DEBIAN_FRONTEND noninteractive
 
-# TODO: Remove nlp_components specific stuff once everything is moved to worker container
-
 RUN apt-get update && apt-get clean
 
 RUN apt-get install -y \
@@ -78,13 +76,13 @@ RUN pip3 install \
 
 RUN python3 -m nltk.downloader -d /usr/local/share/nltk_data punkt
 
-COPY ./nlp_service/requirements.txt /tmp/nlp_service/requirements.txt
+COPY ./nlp_service/requirements-worker.txt /tmp/nlp_service/requirements.txt
 RUN pip3 install -r /tmp/nlp_service/requirements.txt
 
-WORKDIR /usr/src
+WORKDIR /usr/src/nlp_service
 
 EXPOSE 5000
 
-COPY docker-entrypoint.sh /root
+COPY docker-entrypoint-worker.sh /root
 
-ENTRYPOINT ["/root/docker-entrypoint.sh"]
+ENTRYPOINT ["/root/docker-entrypoint-worker.sh"]
