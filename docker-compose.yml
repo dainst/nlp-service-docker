@@ -46,7 +46,8 @@ services:
       BROKER_PASSWORD: ${BROKER_PASSWORD}
       BROKER_VHOST: ${BROKER_VHOST}
     volumes:
-      - ./nlp-service-backend/nlp_service/:${NLP_SERVICE_ROOT}/ # TODO: Move nlp_components here
+      - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
+      - ./nlp-service-backend/nlp_components:${NLP_COMPONENTS_ROOT}
     links:
       - nlp-service-broker
     depends_on:
