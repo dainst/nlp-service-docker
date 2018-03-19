@@ -40,12 +40,13 @@ services:
       dockerfile: Dockerfile-worker
     environment:
       NLP_COMPONENTS_ROOT: ${NLP_COMPONENTS_ROOT}
+      NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
       BROKER_HOST: ${BROKER_HOSTNAME}
       BROKER_USER: ${BROKER_USER}
       BROKER_PASSWORD: ${BROKER_PASSWORD}
       BROKER_VHOST: ${BROKER_VHOST}
     volumes:
-      - ./nlp-service-backend/nlp_service/celery_tasks.py:${NLP_SERVICE_ROOT}/celery_tasks.py # TODO: Move nlp_components here
+      - ./nlp-service-backend/nlp_service/:${NLP_SERVICE_ROOT}/ # TODO: Move nlp_components here
     links:
       - nlp-service-broker
     depends_on:
