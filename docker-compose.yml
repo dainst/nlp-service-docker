@@ -12,17 +12,18 @@ services:
       - "5672:5672"
     networks:
       - network_1
+
   nlp-service-backend:
     container_name: nlp_service_backend
     build:
       context: ./nlp-service-backend
       dockerfile: Dockerfile-service
     environment:
-      NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
       BROKER_HOST: ${BROKER_HOSTNAME}
       BROKER_USER: ${BROKER_USER}
       BROKER_PASSWORD: ${BROKER_PASSWORD}
       BROKER_VHOST: ${BROKER_VHOST}
+      PYTHONPATH: ${NLP_SRC_DIR_ROOT}/service
     ports:
       - "5000:5000"
     links:
@@ -30,23 +31,25 @@ services:
     depends_on:
       - nlp-service-broker
     volumes:
-      - ./nlp-service-backend/nlp_service/service:${NLP_SERVICE_ROOT}
+      - ./nlp-service-backend/nlp_service/service:${NLP_SRC_DIR_ROOT}/service
+    working_dir: ${NLP_SRC_DIR_ROOT}/service
     networks:
       - network_1
+
   nlp-worker:
     build:
       context: ./nlp-service-backend
       dockerfile: Dockerfile-worker
     environment:
-      NLP_COMPONENTS_ROOT: ${NLP_COMPONENTS_ROOT}
-      NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
       BROKER_HOST: ${BROKER_HOSTNAME}
       BROKER_USER: ${BROKER_USER}
       BROKER_PASSWORD: ${BROKER_PASSWORD}
       BROKER_VHOST: ${BROKER_VHOST}
+      PYTHONPATH: ${NLP_SRC_DIR_ROOT}/worker:${NLP_SRC_DIR_ROOT}/nlp_components
     volumes:
-      - ./nlp-service-backend/nlp_service/worker:${NLP_SERVICE_ROOT}
-      - ./nlp-service-backend/nlp_components:${NLP_COMPONENTS_ROOT}
+      - ./nlp-service-backend/nlp_service/worker:${NLP_SRC_DIR_ROOT}/worker
+      - ./nlp-service-backend/nlp_components:${NLP_SRC_DIR_ROOT}/nlp_components
+    working_dir: ${NLP_SRC_DIR_ROOT}
     links:
       - nlp-service-broker
     depends_on:

@@ -80,8 +80,6 @@ COPY nlp_service/worker/requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 RUN rm /tmp/requirements.txt
 
-WORKDIR /usr/src/nlp_service
-
 EXPOSE 5000
 
 COPY docker-entrypoint-worker.sh /root
