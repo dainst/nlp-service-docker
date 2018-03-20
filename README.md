@@ -23,7 +23,8 @@ For the most used commands have a look at the [DOCKER.md](DOCKER.md).
 
 ### Interfaces:
 
-The Flask web service container by default is mapped to [localhost:5000](http://localhost:5000).
+The Flask web service container by default is mapped to [localhost:5000](http://localhost:5000). The REST API is 
+documented [here](https://github.com/dainst/nlp_service).
 
 ### Running tests
 
