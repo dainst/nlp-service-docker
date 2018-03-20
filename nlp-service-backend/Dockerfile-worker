@@ -80,8 +80,6 @@ COPY nlp_service/worker/requirements.txt /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements.txt
 RUN rm /tmp/requirements.txt
 
-EXPOSE 5000
-
 COPY docker-entrypoint-worker.sh /root
 
 ENTRYPOINT ["/root/docker-entrypoint-worker.sh"]
