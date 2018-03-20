@@ -17,13 +17,14 @@ RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 ENV LANG LANG=en_US.UTF-8
 
-COPY ./nlp_service/requirements.txt /tmp/nlp_service/requirements.txt
-RUN pip3 install -r /tmp/nlp_service/requirements.txt
+COPY nlp_service/service/requirements.txt /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt
+RUN rm /tmp/requirements.txt
 
 WORKDIR /usr/src
 
 EXPOSE 5000
 
-COPY docker-entrypoint.sh /root
+COPY docker-entrypoint-service.sh /root
 
-ENTRYPOINT ["/root/docker-entrypoint.sh"]
+ENTRYPOINT ["/root/docker-entrypoint-service.sh"]

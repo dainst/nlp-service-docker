@@ -16,6 +16,7 @@ services:
     container_name: nlp_service_backend
     build:
       context: ./nlp-service-backend
+      dockerfile: Dockerfile-service
     environment:
       NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
       BROKER_HOST: ${BROKER_HOSTNAME}
@@ -29,7 +30,7 @@ services:
     depends_on:
       - nlp-service-broker
     volumes:
-      - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
+      - ./nlp-service-backend/nlp_service/service:${NLP_SERVICE_ROOT}
     networks:
       - network_1
   nlp-worker:
@@ -44,7 +45,7 @@ services:
       BROKER_PASSWORD: ${BROKER_PASSWORD}
       BROKER_VHOST: ${BROKER_VHOST}
     volumes:
-      - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
+      - ./nlp-service-backend/nlp_service/worker:${NLP_SERVICE_ROOT}
       - ./nlp-service-backend/nlp_components:${NLP_COMPONENTS_ROOT}
     links:
       - nlp-service-broker
