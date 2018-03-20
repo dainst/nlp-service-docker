@@ -22,12 +22,13 @@ need. The submodule will always start in a detached head state, see this
 For the most used commands have a look at the [DOCKER.md](DOCKER.md).
 
 ### Interfaces:
-- The web service container should be mapped to [localhost:5000](http://localhost:5000). If you navigate to 
-[/database_info](http://localhost:5000/database_info), you should currently see the MongoDB server
-info.
 
-### run tests
-#### unit tests nlp components
-`docker exec -it nlp_service_backend bash`
-`cd /usr/src/nlp_components/idai_journals`
-`pytest --verbose`
+The Flask web service container by default is mapped to [localhost:5000](http://localhost:5000).
+
+### Running tests
+
+#### Unit tests nlp components
+
+1. Connect to the worker container, for an explanation on how to do that see the [DOCKER.md](DOCKER.md).
+2. Change to the correct directory: `cd /usr/src/nlp_components/idai_journals`.
+3. Run the tests: `pytest --verbose`.
