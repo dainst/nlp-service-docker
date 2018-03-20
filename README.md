@@ -1,6 +1,9 @@
 # nlp-service-docker
 Docker configuration for developing [nlp_service](https://github.com/dainst/nlp_service).
 
+## Prerequisites
+
+* [Docker](https://www.docker.com/), plus [docker-compose](https://docs.docker.com/compose/)
 
 ## Usage
 
@@ -9,13 +12,17 @@ Docker configuration for developing [nlp_service](https://github.com/dainst/nlp_
 For further details see: [Git docs](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
 #### Setting up git submodules
+
+This repository contains submodules, in order to pull those, you have to run the following commands from the project
+root:
+
 ```
 git submodule init
 git submodule update
 ```
 
-If you want to work on the submodules code, you first have to navigate to its directory and checkout the branch you 
-need. The submodule will always start in a detached head state, see this 
+If you want to work on a submodules code, you first have to navigate to its respective directory and checkout the branch 
+you need. The submodule will always start in a detached head state, see this 
 [explanation](https://stackoverflow.com/questions/21980073/git-submodules-without-detached-head).
 
 ### Docker
