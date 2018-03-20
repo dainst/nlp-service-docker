@@ -1,42 +1,61 @@
 version: '3.5'
 
 services:
-  nlp-service-db:
-    image: mongo:3.6
-    container_name: nlp_service_db
+  nlp-service-broker:
+    image: rabbitmq:latest
+    container_name: ${BROKER_HOSTNAME}
     environment:
-      - MONGO_DATA_DIR=/data/db
-      - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_NAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MONGODB_USER=${DB_USER_NAME}
-      - MONGODB_PASS=${DB_USER_PASSWORD}
-    volumes:
-      - mongodb_data
+      - RABBITMQ_DEFAULT_USER=${BROKER_USER}
+      - RABBITMQ_DEFAULT_PASS=${BROKER_PASSWORD}
+      - RABBITMQ_DEFAULT_VHOST=${BROKER_VHOST}
     ports:
-      - 27017:27017
+      - "5672:5672"
     networks:
       - network_1
+
   nlp-service-backend:
     container_name: nlp_service_backend
     build:
       context: ./nlp-service-backend
+      dockerfile: Dockerfile-service
     environment:
-      NLP_SERVICE_ROOT: ${NLP_SERVICE_ROOT}
-      NLP_COMPONENTS_ROOT: ${NLP_COMPONENTS_ROOT}
-      DB_HOST: nlp_service_db # corresponds to nlp-service-db's container_name
-      DB_ROOT_CREDENTIALS: ${DB_ROOT_NAME}:${DB_ROOT_PASSWORD} # added for testing, should be removed later on
+      BROKER_HOST: ${BROKER_HOSTNAME}
+      BROKER_USER: ${BROKER_USER}
+      BROKER_PASSWORD: ${BROKER_PASSWORD}
+      BROKER_VHOST: ${BROKER_VHOST}
+      PYTHONPATH: ${NLP_SRC_DIR_ROOT}/service
     ports:
       - "5000:5000"
+    links:
+      - nlp-service-broker
     depends_on:
-      - nlp-service-db
+      - nlp-service-broker
     volumes:
-      - ./nlp-service-backend/nlp_service:${NLP_SERVICE_ROOT}
-      - ./nlp-service-backend/nlp_components:${NLP_COMPONENTS_ROOT}
+      - ./nlp-service-backend/nlp_service/service:${NLP_SRC_DIR_ROOT}/service
+    working_dir: ${NLP_SRC_DIR_ROOT}/service
     networks:
       - network_1
 
-volumes:
-  mongodb_data: {}
+  nlp-worker:
+    build:
+      context: ./nlp-service-backend
+      dockerfile: Dockerfile-worker
+    environment:
+      BROKER_HOST: ${BROKER_HOSTNAME}
+      BROKER_USER: ${BROKER_USER}
+      BROKER_PASSWORD: ${BROKER_PASSWORD}
+      BROKER_VHOST: ${BROKER_VHOST}
+      PYTHONPATH: ${NLP_SRC_DIR_ROOT}/worker:${NLP_SRC_DIR_ROOT}/nlp_components
+    volumes:
+      - ./nlp-service-backend/nlp_service/worker:${NLP_SRC_DIR_ROOT}/worker
+      - ./nlp-service-backend/nlp_components:${NLP_SRC_DIR_ROOT}/nlp_components
+    working_dir: ${NLP_SRC_DIR_ROOT}
+    links:
+      - nlp-service-broker
+    depends_on:
+      - nlp-service-broker
+    networks:
+      - network_1
 
 networks:
   network_1:

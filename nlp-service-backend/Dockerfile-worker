@@ -2,7 +2,7 @@ FROM debian:stretch
 
 MAINTAINER Deutsches Archäologisches Institut "dev@dainst.de"
 
-ENV REFRESHED_AT 2018-01-29
+ENV REFRESHED_AT 2018-03-19
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get clean
@@ -76,13 +76,10 @@ RUN pip3 install \
 
 RUN python3 -m nltk.downloader -d /usr/local/share/nltk_data punkt
 
-COPY ./nlp_service/requirements.txt /tmp/nlp_service/requirements.txt
-RUN pip3 install -r /tmp/nlp_service/requirements.txt
+COPY nlp_service/worker/requirements.txt /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt
+RUN rm /tmp/requirements.txt
 
-WORKDIR /usr/src
+COPY docker-entrypoint-worker.sh /root
 
-EXPOSE 5000
-
-COPY docker-entrypoint.sh /root
-
-ENTRYPOINT ["/root/docker-entrypoint.sh"]
+ENTRYPOINT ["/root/docker-entrypoint-worker.sh"]
