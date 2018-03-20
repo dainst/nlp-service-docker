@@ -21,7 +21,7 @@ git submodule init
 git submodule update
 ```
 
-If you want to work on a submodules code, you first have to navigate to its respective directory and checkout the branch 
+If you want to work on a submodule's code, you first have to navigate to its respective directory and checkout the branch 
 you need. The submodule will always start in a detached head state, see this 
 [explanation](https://stackoverflow.com/questions/21980073/git-submodules-without-detached-head).
 
