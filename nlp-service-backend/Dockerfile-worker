@@ -30,14 +30,14 @@ RUN mkdir /opt/bin
 RUN mkdir $TREETAGGER_ROOT
 WORKDIR $TREETAGGER_ROOT
 
-RUN wget http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.1.tar.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/tagger-scripts.tar.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/german-par-linux-3.2-utf8.bin.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/english-par-linux-3.2-utf8.bin.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/italian-par-linux-3.2-utf8.bin.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/spanish-par-linux-3.2-utf8.bin.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/french-par-linux-3.2-utf8.bin.gz
-RUN wget http://www.cis.uni-muenchen.de/%7Eschmid/tools/TreeTagger/data/install-tagger.sh
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.2.tar.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/german.par.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/english.par.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/italian.par.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/spanish.par.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/french.par.gz
+RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/install-tagger.sh
 RUN sh install-tagger.sh
 
 # Install Stanford NER  for nlp_components
