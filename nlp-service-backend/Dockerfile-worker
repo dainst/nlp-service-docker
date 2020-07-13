@@ -52,15 +52,19 @@ RUN unzip stanford-ner-2015-12-09.zip
 RUN mv stanford-ner-2015-12-09/* $STANFORDHOME
 RUN rm stanford-ner-2015-12-09.zip
 
-RUN wget http://nlp.dainst.org/html/nerclass/english.all.3class.distsim.crf.ser.gz -P $STANFORDHOME/classifiers
-RUN wget http://nlp.dainst.org/html/nerclass/german.hgc_175m_600.crf.ser.gz -P $STANFORDHOME/classifiers
-RUN wget http://nlp.dainst.org/html/nerclass/ner-ita-nogpe-noiob_gaz_wikipedia_sloppy.ser.gz -P $STANFORDHOME/classifiers
-RUN wget http://nlp.dainst.org/html/nerclass/spanish.ancora.distsim.s512.crf.ser.gz -P $STANFORDHOME/classifiers
+# Load classifier resources from cumulus
+# NOTE: These are currently just in a user folder (User david.neugabuer@dainst.de)
+#       because we suspect this definition to not live long... (07/2020)
+#       Feel free to set up a better location!
+RUN wget https://cumulus.dainst.org/index.php/s/mLPSSM9pf8GGFkW/download -O $STANFORDHOME/classifiers/english.all.3class.distsim.crf.ser.gz
+RUN wget https://cumulus.dainst.org/index.php/s/dGSFZX9LF2TFN6H/download -O $STANFORDHOME/classifiers/german.hgc_175m_600.crf.ser.gz
+RUN wget https://cumulus.dainst.org/index.php/s/Azefbop4QKxEWcr/download -O $STANFORDHOME/classifiers/ner-ita-nogpe-noiob_gaz_wikipedia_sloppy.ser.gz
+RUN wget https://cumulus.dainst.org/index.php/s/ckRFcoepckcwEsC/download -O $STANFORDHOME/classifiers/spanish.ancora.distsim.s512.crf.ser.gz
 
 # Install Geoparser for nlp_components
 ## ATTENTION: The geoparser home folder is currently hardcoded in nlp_components
 ENV GEOPARSER_HOME=/opt/nlp
-RUN wget http://nlp.dainst.org/html/geo/geoparser-march2016.zip
+RUN wget https://cumulus.dainst.org/index.php/s/CtPgRsNjiZtSdrc/download -O ./geoparser-march2016.zip
 RUN unzip geoparser-march2016.zip
 RUN rm geoparser-march2016.zip
 RUN mv geoparser-march2016 $GEOPARSER_HOME
