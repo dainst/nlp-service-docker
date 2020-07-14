@@ -22,13 +22,13 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG LANG=en_US.UTF-8
 
 # Install Treetagger for nlp_components
-ENV TREETAGGER_ROOT /opt/bin/treetagger
-ENV TREETAGGER_HOME $TREETAGGER_ROOT/cmd
-ENV PATH $PATH:$TREETAGGER_ROOT/bin/:$TREETAGGER_ROOT/cmd/
+# $TREETAGGER_HOME is needed by our scripts but also python's treetagger wrapper
+ENV TREETAGGER_HOME /opt/bin/treetagger
+ENV PATH $PATH:$TREETAGGER_HOME/bin/:$TREETAGGER_HOME/cmd/
 
 RUN mkdir /opt/bin
-RUN mkdir $TREETAGGER_ROOT
-WORKDIR $TREETAGGER_ROOT
+RUN mkdir $TREETAGGER_HOME
+WORKDIR $TREETAGGER_HOME
 
 RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tree-tagger-linux-3.2.2.tar.gz
 RUN wget https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/data/tagger-scripts.tar.gz
